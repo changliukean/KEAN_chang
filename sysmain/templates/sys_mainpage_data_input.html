@@ -1,0 +1,266 @@
+{% load staticfiles%}
+<html>
+
+<head>
+
+  <!-- <link rel="stylesheet" href = "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css"> -->
+
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.0/css/font-awesome.min.css">
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.3.0/css/mdb.min.css" rel="stylesheet">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.js"></script>
+  <!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.js"></script>
+  <script src="{% static 'javascripts/front_end_utils.js' %}"></script>
+  <script src="{% static 'js/bootstrap-datetimepicker.js' %}"></script>
+  <script src="{% static 'js/bootstrap-datetimepicker.min.js' %}"></script>
+  <link href="{% static 'css/bootstrap-datetimepicker.min.css' %}" rel="stylesheet" media="screen">
+  <link href="{% static 'css/bootstrap-datetimepicker.css' %}" rel="stylesheet" media="screen">
+  <link href="{% static 'css/kean_sysmain.css' %}" rel="stylesheet" media="screen">
+  <script src="{% static 'js/jquery.simplePagination.js' %}"></script>
+  <script src="{% static 'js/kean_sysmain.js' %}"></script>
+  <script src="{% static 'js/loading.js' %}"></script>
+  <link href="{% static 'css/loading.css' %}" rel="stylesheet" media="screen">
+
+  <link href="http://cdn.wijmo.com/themes/aristo/jquery-wijmo.css" rel="stylesheet" type="text/css" />
+  <script src="http://cdn.wijmo.com/spreadjs/jquery.wijmo.wijspread.all.3.20142.11.min.js" type="text/javascript"></script>
+  <link href="http://cdn.wijmo.com/spreadjs/jquery.wijmo.wijspread.3.20142.11.css" rel="stylesheet" type="text/css" />
+
+
+</head>
+
+
+<body>
+  <div class="container linear">
+    <h1>Welcome to KEAN system!</h1>
+    <h4><span> Coming soon <span></h4>
+    <h4> Hello!  <span style="font-weight:bold"> {{ user_name }} </span> <button class="btn btn-sm btn-primary"> <a style="color:white;" href="{% url 'login:logout'%}"> logout </a> </button> </h4>
+
+  </div>
+  <div style="min-width:100%">
+    <nav class="navbar navbar-default">
+    <div class="container-fluid" style="padding-left:20%;">
+      <!-- Brand and toggle get grouped for better mobile display -->
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+          <span class="sr-only">Toggle navigation</span>
+        </button>
+        <a class="navbar-brand" href="http://kindle-energy.com" target="_blank">Kindle-Energy</a>
+      </div>
+
+      <!-- Collect the nav links, forms, and other content for toggling -->
+      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <ul class="nav navbar-nav">
+          <li class="active"><a href="{% url 'sysmain:sys_mainpage_home' %}">AMR <span class="sr-only">(current)</span></a></li>
+          <li><a href="{% url 'sysmain:sys_mainpage_pjmlmp' %}">PJM</a></li>
+          <li><a href="{% url 'sysmain:sys_amr_dashboard' %}">AMR Dashboard(poc only)</a></li>
+          <li><a>SPREADSHEET VIEW(poc only)</a></li>
+            <!-- {% url 'sysmain:load_amr' %} disabled for now -->
+        </ul>
+
+      </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+    </nav>
+  </div>
+
+
+
+
+  <div class="container-fluid" style="max-width:90%;">
+
+    <div class="navbar navbar-default navbar-fixed-left">
+      <ul class="nav navbar-nav" style="padding-top:50px;min-width:100%;">
+        <li><a href="/sys_mainpage/checkview">Check View</a></li>
+       <li class="active"><a href="/sys_mainpage/data_prepare">Input Data Upload Panel</a></li>
+       <li><a href="/sys_mainpage/calc_control">Calculation Control Panel</a></li>
+       <li><a href="/sys_mainpage/amr_report">Report Control Panel</a></li>
+      </ul>
+    </div>
+
+
+
+    <div class="container" style="float:left; max-width:60%;">
+
+      <div class="container" style="width:400px;">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>Company Scenario Picker</th>
+              <th></th>
+            </tr>
+          </thead>
+
+
+          <tbody>
+            <tr>
+              <td>
+                <div class="btn-group" style="min-width: 15%;">
+                  <select id="company_scenario" name="com_scen_picker" style="min-height:30px; min-width:100%;" class="selectpicker btn btn-md btn-primary" name="company_scenario_picker" required>
+                    {% for item in existing_company_scenario_list %}
+                      <option value="{{item}}">{{item}}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+              </td>
+
+              <td>
+                <div class="btn-group" style="min-width: 15%;">
+                  <button class="btn btn-md btn-primary" onclick="check_financials_status()">Check</button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+
+      <div class="container">
+        <div class="panel panel-primary" style="max-width:70%;">
+          <div class="panel-heading" style="max-width:100%;">Input Panel</div>
+          <form id="upload_file_form" action="upload_input_data" method="post" class = "form-group" enctype="multipart/form-data" onsubmit="return check_upload_file()">
+
+          <div class="panel-body">
+                {% csrf_token %}
+
+                <input type="file" id="exampleInputFile" name="upload_file" class="btn btn-md btn-primary" style="max-width:400px;" />
+                <span class="label label-default">{{file_uploaded_info}}</span>
+                <div></div>
+                <select class="selectpicker btn btn-md btn-primary" id="module_picker" name="module_name" >
+                  <option selected="selected" value="actuals">Actuals</option>
+                  <option value="budget">Budget</option>
+                  <option value="dispatch">Dispatch</option>
+                  <option value="respreads">Project Respreads</option>
+                  <option value="prices">Prices</option>
+                  <option value="labor">Labor Census</option>
+                  <option value="manual">Manual Financials</option>
+                  <option value="pxq">PxQ Support Input</option>
+                </select>
+
+                <button type="submit" class="btn btn-md btn-primary" >Upload</button>
+                <button class="btn btn-md btn-primary"><a style="color:white;" href="/sys_mainpage/download_input_data/" id="download_button"> Download Current Input File</a></button>
+                <script>
+                    $("#download_button").click(function(){
+                      selected_module = $("#module_picker").val();
+                      selected_com_scen = $("#com_scen_picker").val();
+                      $(this).attr("href","/sys_mainpage/download_input_data/module=" + selected_module + "&com_scen=" + selected_com_scen);
+                      return true;
+                    })
+                </script>
+
+          </div>
+          </form>
+
+        </div>
+
+
+      </div>
+
+
+
+
+      <div class="panel panel-primary" style="min-width:900px;min-height:55%;" hidden>
+        <div class="panel-heading" id="selected_company_scenario"></div>
+
+        <div class="panel-body" style="max-width:100%">
+          <div class="container" style="max-width:100%;">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th>Version</th>
+                  <th>Actuals Period</th>
+                  <th>Estimate Period</th>
+                  <th>Forecast Period</th>
+                  <th></th>
+                </tr>
+              </thead>
+
+              <tbody>
+                <tr>
+                  <td>
+                    <div class="btn-group" style="min-width: 15%;">
+                      <select id="version_picker" style="min-height:30px; min-width:100%;" class="selectpicker btn btn-md btn-primary " name="version_picker" disabled required>
+                        <option value="">Please select company and scenario</option>
+                      </select>
+                    </div>
+                  </td>
+
+                  <td id="actuals_period" style="text-align:center;"></td>
+                  <td id="estimate_period" style="text-align:center;"></td>
+                  <td id="forecast_period" style="text-align:center;"></td>
+
+
+
+                  <td>
+                    <div class="btn-group" style="min-width: 15%;">
+                      <button class="btn btn-md btn-primary" id="check_version" onclick="check_version()" disabled>Check</button>
+                    </div>
+                  </td>
+                  </tr>
+              <tbody>
+            </table>
+          </div>
+
+        <div class="container pre-scrollable" style="max-width:100%;">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>Entity</th>
+                <th>Financial Item</th>
+                <th>Period Range</th>
+                <th>Output Source</th>
+                <th>Count</th>
+              </tr>
+            </thead>
+              <tbody id="fsli_status">
+              </tbody>
+          </table>
+        </div>
+
+        </div>
+      </div>
+
+
+
+
+
+
+
+      <div class="panel panel-primary" style="min-width:820px;min-height:55%;">
+        <div class="panel-heading" id="selected_company_scenario_input" style="max-width:100%;"></div>
+
+        <div class="panel-body">
+          <div class="container pre-scrollable" style="max-width:100%; min-width:100%; min-height:50%;">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th>Module</th>
+                  <th>Entity</th>
+                  <th>Period Range</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+
+              <tbody id="input_data_status">
+
+              </tbody>
+            </table>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+
+
+  <div class="col-sm-12" style="height:20px;"></div>
+  <div class="col-sm-12" style="height:20px;"></div>
+
+  </div>
+
+
+</body>
+
+</html>

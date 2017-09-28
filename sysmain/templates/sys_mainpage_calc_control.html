@@ -1,0 +1,533 @@
+{% load staticfiles%}
+<html>
+
+<head>
+
+  <!-- <link rel="stylesheet" href = "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css"> -->
+
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.0/css/font-awesome.min.css">
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.3.0/css/mdb.min.css" rel="stylesheet">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.js"></script>
+  <!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.js"></script>
+  <script src="{% static 'javascripts/front_end_utils.js' %}"></script>
+  <script src="{% static 'js/bootstrap-datetimepicker.js' %}"></script>
+  <script src="{% static 'js/bootstrap-datetimepicker.min.js' %}"></script>
+  <link href="{% static 'css/bootstrap-datetimepicker.min.css' %}" rel="stylesheet" media="screen">
+  <link href="{% static 'css/bootstrap-datetimepicker.css' %}" rel="stylesheet" media="screen">
+  <link href="{% static 'css/kean_sysmain.css' %}" rel="stylesheet" media="screen">
+  <script src="{% static 'js/jquery.simplePagination.js' %}"></script>
+  <script src="{% static 'js/kean_sysmain.js' %}"></script>
+  <script src="{% static 'js/loading.js' %}"></script>
+  <link href="{% static 'css/loading.css' %}" rel="stylesheet" media="screen">
+
+  <link href="http://cdn.wijmo.com/themes/aristo/jquery-wijmo.css" rel="stylesheet" type="text/css" />
+  <script src="http://cdn.wijmo.com/spreadjs/jquery.wijmo.wijspread.all.3.20142.11.min.js" type="text/javascript"></script>
+  <link href="http://cdn.wijmo.com/spreadjs/jquery.wijmo.wijspread.3.20142.11.css" rel="stylesheet" type="text/css" />
+
+
+</head>
+
+
+<body>
+  <div class="container linear">
+    <h1>Welcome to KEAN system!</h1>
+    <h4><span> Coming soon <span></h4>
+    <h4> Hello!  <span style="font-weight:bold"> {{ user_name }} </span> <button class="btn btn-sm btn-primary"> <a style="color:white;" href="{% url 'login:logout'%}"> logout </a> </button> </h4>
+
+  </div>
+  <div style="min-width:100%">
+    <nav class="navbar navbar-default">
+    <div class="container-fluid" style="padding-left:20%;">
+      <!-- Brand and toggle get grouped for better mobile display -->
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+          <span class="sr-only">Toggle navigation</span>
+        </button>
+        <a class="navbar-brand" href="http://kindle-energy.com" target="_blank">Kindle-Energy</a>
+      </div>
+
+      <!-- Collect the nav links, forms, and other content for toggling -->
+      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <ul class="nav navbar-nav">
+          <li class="active"><a href="{% url 'sysmain:sys_mainpage_home' %}">AMR <span class="sr-only">(current)</span></a></li>
+          <li><a href="{% url 'sysmain:sys_mainpage_pjmlmp' %}">PJM</a></li>
+          <li><a href="{% url 'sysmain:sys_amr_dashboard' %}">AMR Dashboard(poc only)</a></li>
+          <li><a>SPREADSHEET VIEW(poc only)</a></li>
+            <!-- {% url 'sysmain:load_amr' %} disabled for now -->
+        </ul>
+
+      </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+    </nav>
+  </div>
+
+
+
+
+  <div class="container-fluid" style="max-width:90%;">
+
+
+    <div class="navbar navbar-default navbar-fixed-left">
+      <ul class="nav navbar-nav" style="padding-top:50px;min-width:100%;">
+        <li><a href="/sys_mainpage/checkview">Check View</a></li>
+       <li><a href="/sys_mainpage/data_prepare">Input Data Upload Panel</a></li>
+       <li class="active"><a href="#">Calculation Control Panel</a></li>
+       <li><a href="/sys_mainpage/amr_report">Report Control Panel</a></li>
+      </ul>
+    </div>
+
+
+    <a id='download_report' href="" hidden>download</a>
+    <a id='download_report_1' href="" hidden>download</a>
+    <a id='download_report_2' href="" hidden>download</a>
+    <a id='download_report_3' href="" hidden>download</a>
+
+    <center>
+
+    <div class="container" style="float:left; max-width:60%;padding-top:20px;padding-left:0px;">
+
+
+      <div class="container" style="max-width:100%">
+
+        <div class="container" style="max-width:100%;">
+          <table class="table table-striped" style="max-width:25%; float:left;">
+            <thead>
+            <tr>
+              <th>COMPANY-SCENARIO</th>
+              <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+              <td>
+                  <select style="min-height:30px; min-width:100%;" class="selectpicker btn btn-sm btn-primary" id ="company_scenario" >
+                    {% for com_scen in existing_company_scenario_list%}
+                    <option value="{{com_scen}}" id="{{com_scen}}">{{com_scen}}</option>
+                    {% endfor %}
+                  </select>
+              </td>
+
+
+              <td>
+                <button class="btn btn-sm btn-primary" onclick="check_financials_status()">Check</button>
+              </td>
+
+            </tbody>
+
+          </table>
+      </div>
+
+
+
+
+      <div class="panel panel-primary" style="min-width:900px;min-height:15%;">
+        <div class="panel-heading">Budget Panel</div>
+
+        <div class="panel-body" style="max-width:100%">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>Latest Budget Scenario Name</th>
+                <th></th>
+                <th></th>
+                <th>Current AMR</th>
+                <th>Budget Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <select style="min-height:30px; max-width:100%;" class="selectpicker btn btn-sm btn-primary" id="latest_budget_scenario_list">
+                    {% for scenario in latest_budget_scenario_list%}
+                    <option value="{{scenario}}" id="{{scenario}}">{{scenario}}</option>
+                    {% endfor %}
+                  </select>
+                </td>
+
+                <td>
+                  <button class="btn btn-sm btn-primary" onclick="run_budget_for_forecast_period()">Run Budget For AMR</button>
+                </td>
+
+                <td>
+                  <button class="btn btn-sm btn-primary" onclick="run_budget()">Run Budget</button>
+                </td>
+
+                <td style="padding-top:18px;" id="status_count">
+                  {{status_count}}
+                </td>
+
+                <td style="padding-top:18px;" id="budget_status_count">
+                  {{budget_status_count}}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+
+      <div class="panel panel-primary" style="min-width:900px;min-height:15%;">
+        <div class="panel-heading">Main Panel</div>
+
+
+      <div class="col-sm-12" style="height:20px;"></div>
+
+
+        <div class="container" style="max-width:550px;">
+            <div class="container" style="max-width:100%;">
+              <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th>Logic</th>
+                    <th>Switch</th>
+                    <!-- <th>Use Last</th> -->
+                  </tr>
+                </thead>
+
+
+                <tbody id="amr_selection_div">
+                    <tr>
+                      <td>Actuals</td>
+                      <td>
+                        <div class="material-switch">
+                            <input id="actuals_switch" name="amr_switch[]" value="actuals" type="checkbox"/>
+                            <label for="actuals_switch" class="label-primary"></label>
+                        </div>
+                      </td>
+                      <!-- <td>
+                        <div class="material-switch">
+                            <input id="actuals_version_switch" name="amr_version_switch[]" value="actuals_vf" type="checkbox"/>
+                            <label for="actuals_version_switch" class="label-primary"></label>
+                        </div>
+                      </td> -->
+
+
+                    </tr>
+
+                    <tr>
+                      <td>Dispatch</td>
+                      <td>
+                        <div class="material-switch">
+                            <input id="dispatch_switch" name="amr_switch[]" value="dispatch" type="checkbox"/>
+                            <label for="dispatch_switch" class="label-primary"></label>
+                        </div>
+                      </td>
+                      <!-- <td>
+                        <div class="material-switch">
+                            <input id="dispatch_version_switch" name="amr_version_switch[]" value="dispatch_vf" type="checkbox"/>
+                            <label for="dispatch_version_switch" class="label-primary"></label>
+                        </div>
+                      </td> -->
+
+
+                    </tr>
+
+                    <tr>
+                      <td>Respreads</td>
+                      <td>
+                        <div class="material-switch">
+                            <input id="respreads_switch" name="amr_switch[]" value="respreads" type="checkbox"/>
+                            <label for="respreads_switch" class="label-primary"></label>
+                        </div>
+                      </td>
+                      <!-- <td>
+                        <div class="material-switch">
+                            <input id="respreads_version_switch" name="amr_version_switch[]" value="respreads_vf" type="checkbox"/>
+                            <label for="respreads_version_switch" class="label-primary"></label>
+                        </div>
+                      </td> -->
+
+
+                    </tr>
+
+                    <tr>
+                      <td>Hedge</td>
+                      <td>
+                        <div class="material-switch">
+                            <input id="hedge_switch" name="amr_switch[]" value="hedge" type="checkbox"/>
+                            <label for="hedge_switch" class="label-primary"></label>
+                        </div>
+                      </td>
+                      <!-- <td>
+                        <div class="material-switch">
+                            <input id="hedge_version_switch" name="amr_version_switch[]" value="hedge_vf" type="checkbox"/>
+                            <label for="hedge_version_switch" class="label-primary"></label>
+                        </div>
+                      </td> -->
+
+
+
+                    </tr>
+
+                    <tr>
+                      <td>Labor Expense</td>
+                      <td>
+                        <div class="material-switch">
+                            <input id="labor_switch" name="amr_switch[]" value="labor" type="checkbox"/>
+                            <label for="labor_switch" class="label-primary"></label>
+                        </div>
+                      </td>
+                      <!-- <td>
+                        <div class="material-switch">
+                            <input id="labor_version_switch" name="amr_version_switch[]" value="labor_vf" type="checkbox"/>
+                            <label for="labor_version_switch" class="label-primary"></label>
+                        </div>
+                      </td> -->
+
+
+
+                    </tr>
+
+                    <tr>
+                      <td>Direct Upload</td>
+                      <td>
+                        <div class="material-switch">
+                            <input id="direct_switch" name="amr_switch[]" value="direct" type="checkbox"/>
+                            <label for="direct_switch" class="label-primary"></label>
+                        </div>
+                      </td>
+                      <!-- <td>
+                        <div class="material-switch">
+                            <input id="direct_version_switch" name="amr_version_switch[]" value="direct_vf" type="checkbox"/>
+                            <label for="direct_version_switch" class="label-primary"></label>
+                        </div>
+                      </td> -->
+
+                    </tr>
+
+
+                </tbody>
+            </table>
+          </div>
+
+
+            <div>
+              <button class="btn btn-primary" id="amr_run_selection_submit" onclick="submit_amr_run_selection()">Run AMR</button>
+            </div>
+        </div>
+      </div>
+
+      <div class="panel panel-primary" style="min-width:900px;min-height:15%;">
+        <div class="panel-heading" id="selected_company_scenario_input" style="max-width:100%;">Using Specific Values</div>
+
+        <div class="panel-body">
+          <select style="min-height:30px; min-width:20%;" class="selectpicker btn btn-md btn-primary" id ="company_scenario_copy" >
+            {% for com_scen in existing_company_scenario_list%}
+            <option value="{{com_scen}}" id="{{com_scen}}">{{com_scen}}</option>
+            {% endfor %}
+          </select>
+
+          <select style="min-height:30px; min-width:20%;" class="selectpicker btn btn-md btn-primary" id ="fsli" >
+            <option value ='Energy Revenue'>Energy Revenue</option>
+            <option value='Delivered Fuel Expense'>Delivered Fuel Expense</option>
+            <option value='Net Emissions Expense'>Net Emissions Expense</option>
+            <option value='Variable O&M Expense'>Variable O&M Expense</option>
+            <option value='Fuel Handling'>Fuel Handling</option>
+            <option value='Operations'>Operations</option>
+            <option value='Removal Costs'>Removal Costs</option>
+            <option value='Maintenance'>Maintenance</option>
+            <option value='Insurance'>Insurance</option>
+            <option value='Property Tax'>Property Tax</option>
+            <option value='General & Administrative'>General & Administrative</option>
+            <option value='Hedge P&L'>Hedge P&L</option>
+            <option value='Fixed Fuel'>Fixed Fuel</option>
+            <option value='Misc Income'>Misc Income</option>
+            <option value='Ancillary Services Revenue'>Ancillary Services Revenue</option>
+            <option value='Capacity Revenue'>Capacity Revenue</option>
+            <option value='Labor Expenses'>Labor Expenses</option>
+            <option value='Maintenance Capex'>Maintenance Capex</option>
+            <option value='Environmental Capex'>Environmental Capex</option>
+            <option value='LTSA Capex'>LTSA Capex</option>
+            <option value='Growth Capex'>Growth Capex</option>
+          </select>
+
+          <select style="min-height:30px; min-width:20%;" class="selectpicker btn btn-md btn-primary" id ="module_picker" >
+            <option value="actual">Actual Period</option>
+            <option value="estimate">Estimate Period</option>
+            <option value="forecast">Forecast Period</option>
+            <option value="full">Full Year</option>
+            <option value="est_forecast">Estimate and Forecast Period</option>
+          </select>
+
+          <button class="btn btn-md btn-primary" onclick="copy_from_selected()">Copy From Selected</button>
+        </div>
+      </div>
+
+
+
+
+
+
+      <div class="panel panel-primary" style="min-width:900px;min-height:55%;" hidden>
+        <div class="panel-heading" id="selected_company_scenario_input" style="max-width:100%;"></div>
+
+        <div class="panel-body">
+          <div class="container pre-scrollable" style="max-width:100%; min-width:100%; min-height:50%;">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th>Module</th>
+                  <th>Entity</th>
+                  <th>Period Range</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+
+              <tbody id="input_data_status">
+
+              </tbody>
+            </table>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="panel panel-primary" style="min-width:900px;min-height:55%;">
+        <div class="panel-heading" id="selected_company_scenario"></div>
+
+        <div class="panel-body" style="max-width:100%">
+          <div class="container" style="max-width:100%;">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th>Version</th>
+                  <th>Actuals Period</th>
+                  <th>Estimate Period</th>
+                  <th>Forecast Period</th>
+                  <th></th>
+                </tr>
+              </thead>
+
+              <tbody>
+                <tr>
+                  <td>
+                    <div class="btn-group" style="min-width: 15%;">
+                      <select id="version_picker" style="min-height:30px; min-width:100%;" class="selectpicker btn btn-md btn-primary " name="version_picker" disabled required>
+                        <option value="">Please select company and scenario</option>
+                      </select>
+                    </div>
+                  </td>
+
+                  <td id="actuals_period" style="text-align:center;"></td>
+                  <td id="estimate_period" style="text-align:center;"></td>
+                  <td id="forecast_period" style="text-align:center;"></td>
+
+
+
+                  <td>
+                    <div class="btn-group" style="min-width: 15%;">
+                      <button class="btn btn-md btn-primary" id="check_version" onclick="check_version()" disabled>Check</button>
+                    </div>
+                  </td>
+                  </tr>
+              <tbody>
+            </table>
+          </div>
+
+        <div class="container pre-scrollable" style="max-width:100%;">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>Entity</th>
+                <th>Financial Item</th>
+                <th>Period Range</th>
+                <th>Output Source</th>
+                <th>Count</th>
+                <th>Check Sum</th>
+              </tr>
+            </thead>
+              <tbody id="fsli_status">
+              </tbody>
+          </table>
+        </div>
+
+        </div>
+      </div>
+
+
+
+
+      <div class="panel panel-primary" style="min-width:900px;min-height:15%;">
+        <div class="panel-heading">Version Panel</div>
+
+        <div class="panel-body" style="max-width:60%">
+          <table class="table table-default">
+
+          <thead>
+            <tr>
+              <td>
+                <input type="text" style="padding-top:8px;" placeholder="type in version name" id="input_version"/>
+              </td>
+
+              <td>
+                <button class="btn btn-md btn-primary" onclick="make_version()">Make AMR Financials Version</button>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+
+
+
+      <div class="panel panel-primary" style="min-width:900px;min-height:15%;">
+        <div class="panel-heading">Support Report Panel</div>
+
+        <div class="panel-body" style="max-width:60%">
+          <table class="table table-default">
+
+          <thead>
+            <tr>
+              <td colspan="2">
+                <select class="selectpicker btn btn-md btn-primary " id="liquidity_version_picker">
+                  <option value="">Please select a version</option>
+                </select>
+              </td>
+
+              <td>
+                <select style="min-height:30px; max-width:100%;" class="selectpicker btn btn-sm btn-primary" id="latest_budget_scenario_list_for_support">
+                  {% for scenario in latest_budget_scenario_list%}
+                  <option value="{{scenario}}" id="{{scenario}}">{{scenario}}</option>
+                  {% endfor %}
+                </select>
+              </td>
+
+
+            </tr>
+
+            <tr>
+              <td>
+                <button class="btn btn-md btn-primary" onclick="run_liquidity()">Run Liquidity</button>
+              </td>
+              <td>
+                <button class="btn btn-md btn-primary" onclick="run_pxq()">Run PxQ</button>
+              </td>
+            </tr>
+
+
+          </table>
+        </div>
+      </div>
+
+
+      </div>
+
+    </div>
+  </center>
+
+
+  </div>
+
+
+  <div class="col-sm-12" style="height:20px;"></div>
+  <div class="col-sm-12" style="height:20px;"></div>
+
+
+
+</body>
+
+</html>

@@ -1,0 +1,56 @@
+{% load staticfiles %}
+
+<html>
+<head>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.0/css/font-awesome.min.css">
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.3.0/css/mdb.min.css" rel="stylesheet">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  <script src="{% static 'javascripts/front_end_utils.js' %}"></script>
+
+</head>
+
+
+<body>
+  <div> &nbsp </div>;
+  <div> &nbsp </div>;
+  <div> <center> <img src="{% static 'pics/logo.png' %}" /> </center> </div>
+
+  <header><h1><center> Welcome to KEAN! </center><h1></header>
+
+  <div class="container" style="max-width:400px;" id="login_form">
+    {% if login_error_msg %}
+    <!-- <table class="table">
+    <tr class="danger"> <td><span> {{ login_error_msg }} </span></td> </tr>
+    </table> -->
+    <div class="alert alert-danger" role="alert">{{ login_error_msg }}</div>
+    {% endif %}
+    <form class="form-signin" action="/login/" method="post">
+      {% csrf_token %}
+      <label for="input_email" class="sr-only">Email address</label>
+      <input type="email" id="input_email" name="input_email" class="form-control" placeholder="Email address" required="" autofocus="" value="{{last_input_email}}">
+      <label for="input_password" class="sr-only">Password</label>
+      <input type="password" id="input_password" name="input_password" class="form-control" placeholder="Password" required="">
+      <input class="btn btn-lg btn-primary btn-block" type="submit"  value="Sign In" >
+    </form>
+  </div>
+  <div class="container" id="welcome_div" hidden>
+    <center><h id="welcome_user">  </h></center>
+  </div>
+
+
+  <div> &nbsp </div>
+  <div> &nbsp </div>
+  <div> &nbsp </div>
+
+  <footer class="footer">
+        <div class="container">
+          <p class="text-muted" style="text-align:center"> © 2017, Kindle Energy LLC. All rights reserved. <a href="http://kindle-energy.com" target='blank'>www.kindle-energy.com</a> </p>
+        </div>
+  </footer>
+
+</body>
+
+
+
+</html>

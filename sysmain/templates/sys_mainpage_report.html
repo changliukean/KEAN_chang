@@ -1,0 +1,233 @@
+{% load staticfiles%}
+<html>
+
+<head>
+
+  <!-- <link rel="stylesheet" href = "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css"> -->
+
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.0/css/font-awesome.min.css">
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.3.0/css/mdb.min.css" rel="stylesheet">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.js"></script>
+  <!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.js"></script>
+  <script src="{% static 'javascripts/front_end_utils.js' %}"></script>
+  <script src="{% static 'js/bootstrap-datetimepicker.js' %}"></script>
+  <script src="{% static 'js/bootstrap-datetimepicker.min.js' %}"></script>
+  <link href="{% static 'css/bootstrap-datetimepicker.min.css' %}" rel="stylesheet" media="screen">
+  <link href="{% static 'css/bootstrap-datetimepicker.css' %}" rel="stylesheet" media="screen">
+  <link href="{% static 'css/kean_sysmain.css' %}" rel="stylesheet" media="screen">
+  <script src="{% static 'js/jquery.simplePagination.js' %}"></script>
+  <script src="{% static 'js/kean_sysmain.js' %}"></script>
+  <script src="{% static 'js/loading.js' %}"></script>
+  <link href="{% static 'css/loading.css' %}" rel="stylesheet" media="screen">
+
+  <link href="http://cdn.wijmo.com/themes/aristo/jquery-wijmo.css" rel="stylesheet" type="text/css" />
+  <script src="http://cdn.wijmo.com/spreadjs/jquery.wijmo.wijspread.all.3.20142.11.min.js" type="text/javascript"></script>
+  <link href="http://cdn.wijmo.com/spreadjs/jquery.wijmo.wijspread.3.20142.11.css" rel="stylesheet" type="text/css" />
+
+  <!-- testing graphics  -->
+
+
+</head>
+
+
+<body>
+  <div class="container linear">
+    <h1>Welcome to KEAN system!</h1>
+    <h4><span> Coming soon <span></h4>
+    <h4> Hello!  <span style="font-weight:bold"> {{ user_name }} </span> <button class="btn btn-sm btn-primary"> <a style="color:white;" href="{% url 'login:logout'%}"> logout </a> </button> </h4>
+
+  </div>
+  <div style="min-width:100%">
+    <nav class="navbar navbar-default">
+    <div class="container-fluid" style="padding-left:20%;">
+      <!-- Brand and toggle get grouped for better mobile display -->
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+          <span class="sr-only">Toggle navigation</span>
+        </button>
+        <a class="navbar-brand" href="http://kindle-energy.com" target="_blank">Kindle-Energy</a>
+      </div>
+
+      <!-- Collect the nav links, forms, and other content for toggling -->
+      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <ul class="nav navbar-nav">
+          <li class="active"><a href="{% url 'sysmain:sys_mainpage_home' %}">AMR <span class="sr-only">(current)</span></a></li>
+          <li><a href="{% url 'sysmain:sys_mainpage_pjmlmp' %}">PJM</a></li>
+          <li><a href="{% url 'sysmain:sys_amr_dashboard' %}">AMR Dashboard(poc only)</a></li>
+          <li><a>SPREADSHEET VIEW(poc only)</a></li>
+            <!-- {% url 'sysmain:load_amr' %} disabled for now -->
+        </ul>
+
+      </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+    </nav>
+  </div>
+
+
+
+
+  <div class="container-fluid" style="max-width:90%;">
+
+    <div class="navbar navbar-default navbar-fixed-left">
+      <ul class="nav navbar-nav" style="padding-top:50px;min-width:100%;">
+        <li><a href="/sys_mainpage/checkview">Check View</a></li>
+       <li><a href="/sys_mainpage/data_prepare">Input Data Upload Panel</a></li>
+       <li><a href="/sys_mainpage/calc_control">Calculation Control Panel</a></li>
+       <li class="active"><a href="/sys_mainpage/amr_report">Report Control Panel</a></li>
+      </ul>
+    </div>
+
+
+
+    <div class="container" style="float:left; max-width:60%;">
+
+      <div class="container" style="width:400px;">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>Company Scenario Picker</th>
+              <th></th>
+            </tr>
+          </thead>
+
+
+          <tbody>
+            <tr>
+              <td>
+                <div class="btn-group" style="min-width: 15%;">
+                  <select id="company_scenario" name="com_scen_picker" style="min-height:30px; min-width:100%;" class="selectpicker btn btn-md btn-primary" name="company_scenario_picker" required>
+                    {% for item in existing_company_scenario_list %}
+                      <option value="{{item}}">{{item}}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+              </td>
+
+              <td>
+                <div class="btn-group" style="min-width: 15%;">
+                  <button class="btn btn-md btn-primary" onclick="initiate_report_panels()">Check</button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <a id='download_amr_report' href="" hidden>download</a>
+      <a id='download_amr_report_1' href="" hidden>download</a>
+
+
+      <div class="container">
+        <div class="panel panel-primary" style="max-width:90%;">
+          <div class="panel-heading" style="max-width:100%;">AMR Panel</div>
+          <div class="panel-body">
+
+            <select id="amr_version_picker" style="min-height:30px; min-width:30%;" class="selectpicker btn btn-md btn-primary">
+              <option selected="selected">Please select a version for amr</option>
+            </select>
+
+            <select id="budget_scenario_picker" style="min-height:30px; min-width:30%;" class="selectpicker btn btn-md btn-primary">
+              <option selected="selected">Please select a budget</option>
+              {% for scenario in latest_budget_scenario_list%}
+              <option value="{{scenario}}" id="{{scenario}}">{{scenario}}</option>
+              {% endfor %}
+            </select>
+
+            <button class="btn btn-md btn-primary" onclick="generate_amr_report()">Generate AMR</button>
+            <button class="btn btn-md btn-primary" onclick="generate_variance_report()">Variance Report</button>
+
+
+          </div>
+        </div>
+
+
+
+
+
+        <div class="panel panel-primary" style="max-width:90%;">
+          <div class="panel-heading" style="max-width:100%;">FY Report Panel</div>
+          <div class="panel-body">
+
+            <select id="version_year_picker" style="min-height:30px; min-width:30%;" class="selectpicker btn btn-md btn-primary">
+              <option selected="selected">Version-Year</option>
+            </select>
+
+            <button class="btn btn-md btn-primary" onclick="generate_fy_report()">Generate Report</button>
+            <a id='download_fy_report' href="" hidden>download</a>
+
+          </div>
+        </div>
+
+        <div class="panel panel-primary" style="max-width:90%;">
+          <div class="panel-heading" style="max-width:100%;">Diff Check Report Panel</div>
+          <div class="panel-body">
+            <select id="company_picker" style="min-height:30px; min-width:30%;" class="selectpicker btn btn-md btn-primary">
+              {% for temp_company in existing_company_list %}
+              <option value="{{temp_company}}">{{temp_company}}</option>
+              {% endfor %}
+            </select>
+
+            <button class="btn btn-md btn-primary" onclick="check_all_scenario_version()">Check</button>
+
+
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th>First Scenario-Version-Year</th>
+                  <th>Second Scenario-Version-Year</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>
+                      <select id="scenario_version_year_picker_1" style="min-height:30px; min-width:30%;" class="selectpicker btn btn-md btn-primary">
+                      <option selected="selected">Scenario-Version-Year</option>
+                      </select>
+                  </td>
+                  <td>
+                    <select id="scenario_version_year_picker_2" style="min-height:30px; min-width:30%;" class="selectpicker btn btn-md btn-primary">
+                    <option selected="selected">Scenario-Version-Year</option>
+                    </select>
+                  </td>
+                  <td><button class="btn btn-md btn-primary" onclick="compare_diff_report()">Generate Diff</button></td>
+                </tr>
+              </tbody>
+            </table>
+
+
+
+
+          </div>
+        </div>
+
+        <div class="panel panel-primary" style="max-width:90%;">
+          <div class="panel-heading" style="max-width:100%;">Support Report Panel</div>
+          <div class="panel-body">
+
+
+          </div>
+        </div>
+
+
+      </div>
+
+    </div>
+
+
+  <div class="col-sm-12" style="height:20px;"></div>
+  <div class="col-sm-12" style="height:20px;"></div>
+
+  </div>
+
+
+
+
+</body>
+
+</html>

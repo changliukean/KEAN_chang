@@ -1,0 +1,135 @@
+.linear{
+
+width:100%;
+
+padding-top:2%;
+padding-bottom: 2%;
+padding-left: 20%;
+padding-right: 20%;
+border-left: 100px;
+border-right: 100px;
+background: -webkit-linear-gradient(top,#538eed, #ffffff);   /*Safari5.1 Chrome 10+*/
+
+}
+
+
+
+.kean-select{
+  min-height: 150px;
+}
+
+
+.kean-col-1{
+  min-width: 10%;
+  max-width: 10%;
+  align:left;
+}
+
+.kean-col-15{
+  min-width: 15%;
+  max-width: 15%;
+  align:left;
+}
+
+.kean-col-2{
+  min-width: 20%;
+  max-width: 20%;
+  align:left;
+}
+
+.kean-col-25{
+  min-width: 25%;
+  max-width: 25%;
+  align:left;
+}
+
+
+.kean-col-3{
+  min-width: 30%;
+  max-width: 30%;
+  align:left;
+}
+
+
+.material-switch > input[type="checkbox"] {
+    display: none;
+}
+
+.material-switch > label {
+    cursor: pointer;
+    height: 0px;
+    position: relative;
+    width: 80px;
+}
+
+.material-switch > label::before {
+    background: rgb(0, 0, 0);
+    box-shadow: inset 0px 0px 10px rgba(0, 0, 0, 0.5);
+    border-radius: 8px;
+    content: '';
+    height: 16px;
+    /*margin-top: -8px;*/
+    position:absolute;
+    opacity: 0.3;
+    transition: all 0.4s ease-in-out;
+    width: 40px;
+}
+.material-switch > label::after {
+    background: rgb(255, 255, 255);
+    border-radius: 16px;
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3);
+    content: '';
+    height: 24px;
+    left: 0px;
+    /*margin-top: -8px;*/
+    position: absolute;
+    top: -4px;
+    transition: all 0.3s ease-in-out;
+    width: 24px;
+}
+.material-switch > input[type="checkbox"]:checked + label::before {
+    background: inherit;
+    opacity: 0.5;
+}
+.material-switch > input[type="checkbox"]:checked + label::after {
+    background: inherit;
+    left: 20px;
+}
+
+
+.navbar-fixed-left {
+  width: 200px;
+  /*position: fixed;*/
+  border-radius: 0;
+  height: 70%;
+  float:left;
+  left:0%;
+  /*background-color: #f7f8f9;*/
+  /*border-color: #e7e7e7;*/
+}
+
+.navbar-fixed-left .navbar-nav > li {
+  float: none;  /* Cancel default li float: left */
+  width: 100%;
+}
+
+.navbar-fixed-left + .container {
+  padding-left: 6%;
+}
+
+/* On using dropdown menu (To right shift popuped) */
+.navbar-fixed-left .navbar-nav > li > .dropdown-menu {
+  /*margin-top: -50px;*/
+  margin-left: 10%;
+}
+
+
+.center-cell-th{
+  text-align: center;
+}
+
+
+.center-cell{
+  text-align: center;
+  align-content: center;
+}
