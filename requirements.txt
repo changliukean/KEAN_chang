@@ -17,7 +17,7 @@ openpyxl==2.4.8
 xlrd==1.1.0
 pip==9.0.1
 pandas==0.20.2
-Pillow==4.2.1
+Pillow==8.1.1
 scipy==0.19.1
 SQLAlchemy==1.1.14
 XlsxWriter==0.9.8
